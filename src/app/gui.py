@@ -13,8 +13,8 @@ class AppGui(tk.Frame):
 
         # cell dimensions
         self.cell_size = 20
-        self.grid_width = 5
-        self.grid_height = 5
+        self.grid_cols = 120
+        self.grid_rows = 120
 
         # create widgets 
         self.create_widgets()
@@ -26,7 +26,7 @@ class AppGui(tk.Frame):
 
         # Canvas cells grid
         self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
-        self.draw_grid(self.grid_width, self.grid_height, self.canvas) 
+        self.draw_grid(self.grid_cols, self.grid_rows, self.canvas) 
 
         # checkbutton state
         self.check_status = tk.BooleanVar()
