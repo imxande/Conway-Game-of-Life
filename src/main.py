@@ -7,7 +7,6 @@ def main():
     root = Tk()
 
     # main window initial configurations
-    root.geometry("600x600")
     root.wm_title("Conway\'s Game of Life")
 
     # initialize GUI app
