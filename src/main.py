@@ -8,6 +8,7 @@ def main():
 
     # main window initial configurations
     root.wm_title("Conway\'s Game of Life")
+    root.resizable(False, False)
 
     # initialize GUI app
     app = AppGui(master=root)
