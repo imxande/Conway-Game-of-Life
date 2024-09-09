@@ -1,4 +1,5 @@
 from tkinter import Tk
+from app.gui import AppGui
 
 
 def main():
@@ -8,6 +9,9 @@ def main():
     # main window initial configurations
     root.geometry("600x600")
     root.wm_title("Conway\'s Game of Life")
+
+    # initialize GUI app
+    app = AppGui(master=root)
 
 
     # start application mainloop
