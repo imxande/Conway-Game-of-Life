@@ -12,7 +12,9 @@ class AppGui(tk.Frame):
         self.frame_height = 600
 
         # cell dimensions
-        self.cell_size = 50
+        self.cell_size = 20
+        self.grid_width = 5
+        self.grid_height = 5
 
         # create widgets 
         self.create_widgets()
@@ -22,9 +24,9 @@ class AppGui(tk.Frame):
         # initial frame setup
         self.frame = tk.Frame(width=self.frame_width, height=self.frame_height, bg="black")
 
-        # Cells grid
+        # Canvas cells grid
         self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
-        self.draw_grid(5, 5) 
+        self.draw_grid(self.grid_width, self.grid_height, self.canvas) 
 
         # checkbutton state
         self.check_status = tk.BooleanVar()
@@ -55,14 +57,21 @@ class AppGui(tk.Frame):
 
 
     # draw grid method
-    def draw_grid(self, cols, rows):
+    def draw_grid(self, cols, rows, canvas):
         # create array
         grid = np.zeros((rows, cols))
 
-        # sanity check
-        for row in grid:
-            for el in grid:
-                print(el, end=" ")
-            print() # Newline after each row
+        # iterate over each item in oue 2d Array
+        for row_idx in range(rows):
+             # iterate over each cell 
+            for col_idx in range(cols):
+                # calculate cells top-left and bottom-right coordinates 
+                x0 = col_idx * self.cell_size
+                y0 = row_idx * self.cell_size
+                x1 = x0 + self.cell_size
+                y1 = y0 + self.cell_size
 
-        # the actual drawing happens here
+                # draw a rectangle
+                canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="white")
+
+
