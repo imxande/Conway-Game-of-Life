@@ -1,4 +1,5 @@
 import tkinter as tk
+import numpy as np
 
 class AppGui(tk.Frame):
     def __init__(self, master):
@@ -10,6 +11,9 @@ class AppGui(tk.Frame):
         self.frame_width = 600
         self.frame_height = 600
 
+        # cell dimensions
+        self.cell_size = 50
+
         # create widgets 
         self.create_widgets()
 
@@ -20,6 +24,7 @@ class AppGui(tk.Frame):
 
         # Cells grid
         self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
+        self.draw_grid(5, 5) 
 
         # checkbutton state
         self.check_status = tk.BooleanVar()
@@ -48,3 +53,16 @@ class AppGui(tk.Frame):
         self.generation_label.grid(column=5, row=1)
         self.population_label.grid(column=5, row=2)
 
+
+    # draw grid method
+    def draw_grid(self, cols, rows):
+        # create array
+        grid = np.zeros((rows, cols))
+
+        # sanity check
+        for row in grid:
+            for el in grid:
+                print(el, end=" ")
+            print() # Newline after each row
+
+        # the actual drawing happens here
