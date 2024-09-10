@@ -14,6 +14,9 @@ class AppGui(tk.Frame):
         self.grid_cols = self.frame_width // self.cell_size
         self.grid_rows = self.frame_height // self.cell_size
 
+        # initialize grid
+        self.grid = np.zeros((self.grid_rows, self.grid_cols))
+
         # create widgets 
         self.create_widgets()
 
@@ -25,14 +28,13 @@ class AppGui(tk.Frame):
         # Canvas cells grid
         self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
         self.canvas.bind("<Button-1>", self.handle_click)
-        self.draw_grid(self.grid_cols, self.grid_rows) 
 
         # checkbutton state
         self.check_status = tk.BooleanVar()
         self.check_status.set(True)
 
         # Buttons
-        self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status)
+        self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
         self.play_button = tk.Button(self.frame, text="Start")
         self.pause_button = tk.Button(self.frame, text="Pause")
         self.next_button = tk.Button(self.frame, text="Next")
@@ -54,12 +56,12 @@ class AppGui(tk.Frame):
         self.generation_label.grid(column=5, row=1)
         self.population_label.grid(column=5, row=2)
 
+        # draw initial grid
+        self.draw_grid(self.grid_cols, self.grid_rows, "black")
+
 
     # draw grid method
-    def draw_grid(self, cols, rows):
-        # create array
-        self.grid = np.zeros((rows, cols))
-
+    def draw_grid(self, cols, rows, outline_color):
         # iterate over each item in oue 2d Array
         for row_idx in range(rows):
              # iterate over each cell 
@@ -71,7 +73,7 @@ class AppGui(tk.Frame):
                 y1 = y0 + self.cell_size
 
                 # draw a rectangle
-                self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="white")
+                self.canvas.create_rectangle(x0, y0, x1, y1, outline=outline_color, fill="white")
 
         
 
@@ -106,5 +108,17 @@ class AppGui(tk.Frame):
         self.grid.fill(0)
 
         # change the color of the cell by drawing the grid
-        self.draw_grid(self.grid_cols, self.grid_rows) 
+        self.draw_grid(self.grid_cols, self.grid_rows, "white") 
 
+    def display_grid(self):
+        # get the value of check_status
+        status = self.check_status.get()
+
+        if (status):
+            outline_color = "black"
+        
+        else:
+            outline_color = "white"
+
+        # draw the grid
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color) 
