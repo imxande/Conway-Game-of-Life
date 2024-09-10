@@ -107,8 +107,17 @@ class AppGui(tk.Frame):
         # change the state of every cell to 0
         self.grid.fill(0)
 
+        # get the value of check_status
+        status = self.check_status.get()
+
+        if (status):
+            outline_color = "black"
+        
+        else:
+            outline_color = "white"
+
         # change the color of the cell by drawing the grid
-        self.draw_grid(self.grid_cols, self.grid_rows, "white") 
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color) 
 
     def display_grid(self):
         # get the value of check_status
