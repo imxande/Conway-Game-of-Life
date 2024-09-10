@@ -79,6 +79,9 @@ class AppGui(tk.Frame):
 
     # handle click to change celss colors
     def handle_click(self, event):
+        # get outline color
+        color = self.get_outline_color()
+
         # calculate col and row of clicked cell
         cell_row = event.y // self.cell_size
         cell_col = event.x // self.cell_size
@@ -101,25 +104,27 @@ class AppGui(tk.Frame):
             y1 = y0 + self.cell_size
 
             # update cell color
-            self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill=fill_color)
+            self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, fill=fill_color)
 
     def clear_cells(self):
         # change the state of every cell to 0
         self.grid.fill(0)
 
-        # get the value of check_status
-        status = self.check_status.get()
-
-        if (status):
-            outline_color = "black"
-        
-        else:
-            outline_color = "white"
+        # get outline color
+        color = self.get_outline_color()
 
         # change the color of the cell by drawing the grid
-        self.draw_grid(self.grid_cols, self.grid_rows, outline_color) 
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color) 
 
     def display_grid(self):
+        # get outline color
+        color = self.get_outline_color()
+
+        # draw the grid
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color) 
+
+    # helper method to get outline color based on the status of our grid
+    def get_outline_color(self) -> str:
         # get the value of check_status
         status = self.check_status.get()
 
@@ -129,5 +134,4 @@ class AppGui(tk.Frame):
         else:
             outline_color = "white"
 
-        # draw the grid
-        self.draw_grid(self.grid_cols, self.grid_rows, outline_color) 
+        return outline_color
