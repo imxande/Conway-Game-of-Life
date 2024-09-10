@@ -7,14 +7,12 @@ class AppGui(tk.Frame):
 
         self.master = master
 
-        # Frame dimentions
+        # Dimentions
         self.frame_width = 600
         self.frame_height = 600
-
-        # cell dimensions
         self.cell_size = 20
-        self.grid_cols = 120
-        self.grid_rows = 120
+        self.grid_cols = self.frame_width // self.cell_size
+        self.grid_rows = self.frame_height // self.cell_size
 
         # create widgets 
         self.create_widgets()
@@ -26,7 +24,8 @@ class AppGui(tk.Frame):
 
         # Canvas cells grid
         self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
-        self.draw_grid(self.grid_cols, self.grid_rows, self.canvas) 
+        self.canvas.bind("<Button-1>", self.handle_click)
+        self.draw_grid(self.grid_cols, self.grid_rows) 
 
         # checkbutton state
         self.check_status = tk.BooleanVar()
@@ -57,9 +56,9 @@ class AppGui(tk.Frame):
 
 
     # draw grid method
-    def draw_grid(self, cols, rows, canvas):
+    def draw_grid(self, cols, rows):
         # create array
-        grid = np.zeros((rows, cols))
+        self.grid = np.zeros((rows, cols))
 
         # iterate over each item in oue 2d Array
         for row_idx in range(rows):
@@ -72,6 +71,25 @@ class AppGui(tk.Frame):
                 y1 = y0 + self.cell_size
 
                 # draw a rectangle
-                canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="white")
+                self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="white")
+
+        
+
+    # handle click to change celss colors
+    def handle_click(self, event):
+        # calculate col and row of clicked cell
+        cell_row = event.y // self.cell_size
+        cell_col = event.x // self.cell_size
+
+        # validate click within grid bound
+        if 0 <= cell_col < self.grid.shape[1] and 0 <= cell_row < self.grid.shape[0]:
+            # calculate coordinates to draw the black cell
+            x0 = cell_col * self.cell_size
+            y0 = cell_row * self.cell_size
+            x1 = x0 + self.cell_size
+            y1 = y0 + self.cell_size
+
+            # update cell color
+            self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="black")
 
 
