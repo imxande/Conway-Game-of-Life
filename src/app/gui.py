@@ -36,7 +36,7 @@ class AppGui(tk.Frame):
         self.play_button = tk.Button(self.frame, text="Start")
         self.pause_button = tk.Button(self.frame, text="Pause")
         self.next_button = tk.Button(self.frame, text="Next")
-        self.clear_button = tk.Button(self.frame, text="Clear")
+        self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
         # labels
         self.generation_label = tk.Label(self.frame, text="Generation: 0")
@@ -101,4 +101,10 @@ class AppGui(tk.Frame):
             # update cell color
             self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill=fill_color)
 
+    def clear_cells(self):
+        # change the state of every cell to 0
+        self.grid.fill(0)
+
+        # change the color of the cell by drawing the grid
+        self.draw_grid(self.grid_cols, self.grid_rows) 
 
