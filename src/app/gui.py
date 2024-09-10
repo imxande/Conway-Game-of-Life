@@ -83,6 +83,15 @@ class AppGui(tk.Frame):
 
         # validate click within grid bound
         if 0 <= cell_col < self.grid.shape[1] and 0 <= cell_row < self.grid.shape[0]:
+            # toggle cell color
+            if self.grid[cell_row, cell_col] == 0:
+                self.grid[cell_row, cell_col] = 1  # update cell state to 1 (alive)
+                fill_color = "black" # cell will change to this color when alive
+
+            else:
+                self.grid[cell_row, cell_col] = 0 # dead cell
+                fill_color = "white" # default cell color 
+
             # calculate coordinates to draw the black cell
             x0 = cell_col * self.cell_size
             y0 = cell_row * self.cell_size
@@ -90,6 +99,6 @@ class AppGui(tk.Frame):
             y1 = y0 + self.cell_size
 
             # update cell color
-            self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill="black")
+            self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill=fill_color)
 
 
