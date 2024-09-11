@@ -1,11 +1,13 @@
 import tkinter as tk
 import numpy as np
+from app.game_logic import GameOfLife
 
 class AppGui(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
 
         self.master = master
+        self.game_logic = GameOfLife()
 
         # Dimentions
         self.frame_width = 600
@@ -35,7 +37,7 @@ class AppGui(tk.Frame):
 
         # Buttons
         self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
-        self.play_button = tk.Button(self.frame, text="Start")
+        self.play_button = tk.Button(self.frame, text="Start", command=self.game_logic)
         self.pause_button = tk.Button(self.frame, text="Pause")
         self.next_button = tk.Button(self.frame, text="Next")
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
@@ -135,3 +137,5 @@ class AppGui(tk.Frame):
             outline_color = "white"
 
         return outline_color
+    
+        
