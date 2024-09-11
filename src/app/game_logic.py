@@ -42,7 +42,9 @@ class GameOfLife:
         # Update the state matrix with the new generation
         self.state_matrix = next_gen
         self.generations += 1
-        print(f"Generations: {self.generations}")
+
+        # Update population after state matrix is updated
+        self.update_population()
 
 
     def count_live_neighbors(self, row:int, col:int) -> int:
@@ -79,4 +81,8 @@ class GameOfLife:
 
         return live_neighbor_count
     
-    
+    def update_population(self)-> int:
+        """
+        Updates the population count based on the current state of the grid.
+        """
+        self.population = int(np.sum(self.state_matrix))
