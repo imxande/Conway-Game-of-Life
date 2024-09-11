@@ -40,7 +40,7 @@ class AppGui(tk.Frame):
         self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
         self.play_button = tk.Button(self.frame, text="Start", command=self.game_logic)
         self.pause_button = tk.Button(self.frame, text="Pause")
-        self.next_button = tk.Button(self.frame, text="Next")
+        self.next_button = tk.Button(self.frame, text="Next", command=self.game_logic.next_generation)
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
         # labels
