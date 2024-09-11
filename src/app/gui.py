@@ -167,8 +167,11 @@ class AppGui(tk.Frame):
 
     # start game update
     def start_game(self):
-        # start only if not alrady running
-        if not self.is_running:
+        # check for alive cells
+        alive_cells = self._has_alive_cells()
+
+        # start only if not already running and grid contains alive cells
+        if not self.is_running and alive_cells:
             self.is_running = True
             self._update_game()
 
@@ -183,3 +186,10 @@ class AppGui(tk.Frame):
         if self.is_running:
             self.render_next_gen() # computations
             self.master.after(200, self._update_game) #schedule next computations
+
+    # check for alive cells in grid
+    def _has_alive_cells(self)-> bool:
+        # check for alive cells
+        alive_cells = np.any(self.grid == 1) 
+        
+        return alive_cells
