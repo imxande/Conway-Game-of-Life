@@ -7,7 +7,6 @@ class AppGui(tk.Frame):
         super().__init__(master)
 
         self.master = master
-        self.game_logic = GameOfLife()
 
         # Dimentions
         self.frame_width = 600
@@ -18,6 +17,8 @@ class AppGui(tk.Frame):
 
         # initialize grid
         self.grid = np.zeros((self.grid_rows, self.grid_cols))
+
+        self.game_logic = GameOfLife(self.grid)
 
         # create widgets 
         self.create_widgets()
