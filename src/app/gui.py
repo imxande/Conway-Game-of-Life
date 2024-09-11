@@ -163,10 +163,10 @@ class AppGui(tk.Frame):
                 self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, fill=fill_color)
 
 
-
+    # computate game logic
     def start_game(self):
-        # Placeholder for game loop logic
-        pass
+        self.render_next_gen()
+        self.master.after(200, self.start_game)
 
     def pause_game(self):
         # Placeholder for pause logic
