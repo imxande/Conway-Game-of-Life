@@ -7,86 +7,72 @@ class GameOfLife:
         self.population = 0
         self.state_matrix = state_matrix
 
-    # calculate generations
     def next_generation(self):
         '''
             Calculates next generation
 
             - relative position:
-              top, bottom, left, right
+            top, bottom, left, right
 
             - diagonal position: 
-              top-left, bottom-left, top-right, bottom-right
+            top-left, bottom-left, top-right, bottom-right
         '''
+        
+        next_gen = np.zeros_like(self.state_matrix)
+        cell_rows, cell_cols = self.state_matrix.shape
 
-        cell_rows = self.state_matrix.shape[0]
-        cell_cols = self.state_matrix.shape[0]
-        next_gen = np.zeros((cell_rows, cell_cols))
-
-
-
-        # apply game fules to every cell in the matrix
         for row_idx in range(cell_rows):
             for col_idx in range(cell_cols):
-                # value
-                cell_state = self.state_matrix[row_idx][col_idx]
-
-                # count live neighbors
-                live_neighbors = self.count_live_neighbors(self.state_matrix, cell_rows, cell_cols)
-
-                # cell borns if is dead(0) and # of alive neighbors is 3
-                if (cell_state == 0 and live_neighbors == 3):
-                    next_gen[row_idx][col_idx] = 1 # cell becomes alive
-
-                # # cell dies if is alive(1) and isolated or overpopulated
-                elif cell_state == 1 and (live_neighbors < 2 or live_neighbors > 3):
-                    next_gen[row_idx][col_idx] = 0 # cell dies
-
+                # Get the current state of the cell
+                cell_state = self.state_matrix[row_idx, col_idx]
+                
+                # Count live neighbors
+                live_neighbors = self.count_live_neighbors(row_idx, col_idx)
+                
+                # Determine the next state based on the rules of the game
+                if cell_state == 1:
+                    if live_neighbors < 2 or live_neighbors > 3:
+                        next_gen[row_idx, col_idx] = 0  # Cell dies
+                    else:
+                        next_gen[row_idx, col_idx] = 1  # Cell stays alive
                 else:
-                    next_gen[row_idx][col_idx] = cell_state # cell stays the same
+                    if live_neighbors == 3:
+                        next_gen[row_idx, col_idx] = 1  # Cell is born
 
-            # update state matric for next gen
-            self.state_matrix = next_gen
-            self.generations += 1
+        # Update the state matrix with the new generation
+        self.state_matrix = next_gen
+        self.generations += 1
 
 
-
-    def count_live_neighbors(self, matrix:"np.ndarray", rows:int, cols:int)->int:
+    def count_live_neighbors(self, row:int, col:int) -> int:
         """
         Counts the number of alive neighbors around a given cell.
 
         Parameters:
-        - matrix (np.ndarray): A 2D numpy array representing the game grid.
-        - rows (int): The row index of the cell to check neighbors for.
-        - cols (int): The column index of the cell to check neighbors for.
+        - row (int): The row index of the cell to check neighbors for.
+        - col (int): The column index of the cell to check neighbors for.
 
         Returns:
         - int: The number of alive neighbors around the specified cell.
         """
 
         # grid max rows and cols
-        max_rows = matrix.shape[0]
-        max_cols = matrix.shape[1]
+        max_rows = self.state_matrix.shape[0]
+        max_cols = self.state_matrix.shape[1]
 
-        print(max_rows)
-        print(max_cols)
-
-        # count 
         live_neighbor_count = 0
 
         # iterate over adjacent cells
         for row_idx in range(-1, 2):
             for col_idx in range(-1, 2):
                 # calculate neighbor position
-                neighbor_row = rows + row_idx
-                neighbor_col = cols + col_idx
+                neighbor_row = row + row_idx
+                neighbor_col = col + col_idx
 
-                # check neighbor withing bounds
+                # check neighbor within bounds
                 if 0 <= neighbor_row < max_rows and 0 <= neighbor_col < max_cols:
                     # check if it is a live neighbor (and not the cell itself)
-                    if (neighbor_row != rows or neighbor_col != cols) and matrix[neighbor_row, neighbor_col] == 1:
-                        #  increase neighbor count
-                         live_neighbor_count += 1
+                    if (neighbor_row != row or neighbor_col != col) and self.state_matrix[neighbor_row, neighbor_col] == 1:
+                        live_neighbor_count += 1
 
         return live_neighbor_count
-    

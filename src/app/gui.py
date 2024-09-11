@@ -8,45 +8,43 @@ class AppGui(tk.Frame):
 
         self.master = master
 
-        # Dimentions
+        # Dimensions
         self.frame_width = 600
         self.frame_height = 600
         self.cell_size = 20
         self.grid_cols = self.frame_width // self.cell_size
         self.grid_rows = self.frame_height // self.cell_size
 
-        # initialize grid
+        # Initialize grid
         self.grid = np.zeros((self.grid_rows, self.grid_cols))
 
         self.game_logic = GameOfLife(self.grid)
 
-        # create widgets 
+        # Create widgets
         self.create_widgets()
 
-    # create widgets method
     def create_widgets(self):
-        # initial frame setup
+        # Initial frame setup
         self.frame = tk.Frame(width=self.frame_width, height=self.frame_height, bg="black")
 
         # Canvas cells grid
-        self.canvas = tk.Canvas(self.frame,bg="purple", width=self.frame_width, height=500)
+        self.canvas = tk.Canvas(self.frame, bg="purple", width=self.frame_width, height=self.frame_height)
         self.canvas.bind("<Button-1>", self.handle_click)
 
-        # checkbutton state
+        # Checkbutton state
         self.check_status = tk.BooleanVar()
         self.check_status.set(True)
 
         # Buttons
         self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
-        self.play_button = tk.Button(self.frame, text="Start", command=self.game_logic)
-        self.pause_button = tk.Button(self.frame, text="Pause")
+        self.play_button = tk.Button(self.frame, text="Start", command=self.start_game)  # Updated command
+        self.pause_button = tk.Button(self.frame, text="Pause", command=self.pause_game)  # Placeholder command
         self.next_button = tk.Button(self.frame, text="Next", command=self.render_next_gen)
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
-        # labels
+        # Labels
         self.generation_label = tk.Label(self.frame, text="Generation: 0")
-        self.population_label = tk.Label(self.frame, text="Populattion: 0")
-
+        self.population_label = tk.Label(self.frame, text="Population: 0")  # Fixed typo
         
         # Layout
         self.frame.grid(column=0, row=0, sticky="nsew")
@@ -59,87 +57,117 @@ class AppGui(tk.Frame):
         self.generation_label.grid(column=5, row=1)
         self.population_label.grid(column=5, row=2)
 
-        # draw initial grid
+        # Draw initial grid
         self.draw_grid(self.grid_cols, self.grid_rows, "black")
 
-
-    # draw grid method
     def draw_grid(self, cols, rows, outline_color):
-        # iterate over each item in oue 2d Array
+        # Iterate over each item in our 2D array
         for row_idx in range(rows):
-             # iterate over each cell 
             for col_idx in range(cols):
-                # calculate cells top-left and bottom-right coordinates 
                 x0 = col_idx * self.cell_size
                 y0 = row_idx * self.cell_size
                 x1 = x0 + self.cell_size
                 y1 = y0 + self.cell_size
-
-                # draw a rectangle
                 self.canvas.create_rectangle(x0, y0, x1, y1, outline=outline_color, fill="white")
 
-        
-
-    # handle click to change celss colors
     def handle_click(self, event):
-        # get outline color
+        # variables
         color = self.get_outline_color()
-
-        # calculate col and row of clicked cell
         cell_row = event.y // self.cell_size
         cell_col = event.x // self.cell_size
 
-        # validate click within grid bound
         if 0 <= cell_col < self.grid.shape[1] and 0 <= cell_row < self.grid.shape[0]:
-            # toggle cell color
             if self.grid[cell_row, cell_col] == 0:
-                self.grid[cell_row, cell_col] = 1  # update cell state to 1 (alive)
-                fill_color = "black" # cell will change to this color when alive
-
+                self.grid[cell_row, cell_col] = 1
+                fill_color = "black"
             else:
-                self.grid[cell_row, cell_col] = 0 # dead cell
-                fill_color = "white" # default cell color 
+                self.grid[cell_row, cell_col] = 0
+                fill_color = "white"
 
-            # calculate coordinates to draw the black cell
             x0 = cell_col * self.cell_size
             y0 = cell_row * self.cell_size
             x1 = x0 + self.cell_size
             y1 = y0 + self.cell_size
 
-            # update cell color
             self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, fill=fill_color)
 
     def clear_cells(self):
-        # change the state of every cell to 0
+        # Clear the state matrix
         self.grid.fill(0)
+        self.game_logic.state_matrix = np.zeros_like(self.grid)  # ensures the game logic state matrix is also cleared
 
-        # get outline color
+        # Clear the canvas
+        self.canvas.delete("all")
+        
+        # Draw the grid
         color = self.get_outline_color()
-
-        # change the color of the cell by drawing the grid
-        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color) 
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
+        
+        # Clear the canvas and redraw the grid
+        self.canvas.delete("all")
+        color = self.get_outline_color()
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
 
     def display_grid(self):
-        # get outline color
         color = self.get_outline_color()
+        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
 
-        # draw the grid
-        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color) 
-
-    # helper method to get outline color based on the status of our grid
     def get_outline_color(self) -> str:
-        # get the value of check_status
-        status = self.check_status.get()
+        return "black" if self.check_status.get() else "white"
 
-        if (status):
-            outline_color = "black"
-        
-        else:
-            outline_color = "white"
-
-        return outline_color
-    
-    
-    # display next gen
     def render_next_gen(self):
-        print("Next Gen")
+        print("Rendering next generation")
+        
+        # Update game logic state with the current grid state
+        self.game_logic.state_matrix = self.grid.copy()  # Copying grid here
+
+        # Compute the next generation
+        self.game_logic.next_generation()
+
+        # Update self.grid with the new state matrix from game logic
+        self.grid = self.game_logic.state_matrix.copy()
+
+        # Debugging: Print the updated state matrix
+        print("State matrix after next_generation:")
+        print(self.grid)
+
+        self.update_grid()
+
+
+    def update_grid(self):
+        # Clear canvas before redraw
+        self.canvas.delete("all")
+        
+        # Debugging: Print the state matrix before rendering
+        print("Updating grid with new state")
+        print("State matrix before rendering:")
+        print(self.game_logic.state_matrix)
+
+        # Iterate over each cell in the grid
+        for row_idx in range(self.grid_rows):
+            for col_idx in range(self.grid_cols):
+                # Get cell state
+                cell_state = self.game_logic.state_matrix[row_idx, col_idx]
+
+                # Handle fill and color
+                fill_color = "black" if cell_state == 1 else "white"
+                color = self.get_outline_color()
+
+                # Calculate coordinates to draw the cell
+                x0 = col_idx * self.cell_size
+                y0 = row_idx * self.cell_size
+                x1 = x0 + self.cell_size
+                y1 = y0 + self.cell_size
+
+                # Redraw grid
+                self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, fill=fill_color)
+
+
+
+    def start_game(self):
+        # Placeholder for game loop logic
+        pass
+
+    def pause_game(self):
+        # Placeholder for pause logic
+        pass
