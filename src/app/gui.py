@@ -40,7 +40,7 @@ class AppGui(tk.Frame):
         self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
         self.play_button = tk.Button(self.frame, text="Start", command=self.game_logic)
         self.pause_button = tk.Button(self.frame, text="Pause")
-        self.next_button = tk.Button(self.frame, text="Next", command=self.game_logic.next_generation)
+        self.next_button = tk.Button(self.frame, text="Next", command=self.render_next_gen)
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
         # labels
@@ -139,4 +139,7 @@ class AppGui(tk.Frame):
 
         return outline_color
     
-        
+    
+    # display next gen
+    def render_next_gen(self):
+        print("Next Gen")

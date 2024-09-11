@@ -19,10 +19,9 @@ class GameOfLife:
               top-left, bottom-left, top-right, bottom-right
         '''
 
-        alive_neighbors = 0 # adjacent alive cell neighbors
         cell_rows = self.state_matrix.shape[0]
         cell_cols = self.state_matrix.shape[0]
-        nex_gen = np.zeros((cell_rows, cell_cols))
+        next_gen = np.zeros((cell_rows, cell_cols))
 
 
 
@@ -30,10 +29,26 @@ class GameOfLife:
         for row_idx in range(cell_rows):
             for col_idx in range(cell_cols):
                 # value
-                cell = self.state_matrix[row_idx][col_idx]
+                cell_state = self.state_matrix[row_idx][col_idx]
 
                 # count live neighbors
                 live_neighbors = self.count_live_neighbors(self.state_matrix, cell_rows, cell_cols)
+
+                # cell borns if is dead(0) and # of alive neighbors is 3
+                if (cell_state == 0 and live_neighbors == 3):
+                    next_gen[row_idx][col_idx] = 1 # cell becomes alive
+
+                # # cell dies if is alive(1) and isolated or overpopulated
+                elif cell_state == 1 and (live_neighbors < 2 or live_neighbors > 3):
+                    next_gen[row_idx][col_idx] = 0 # cell dies
+
+                else:
+                    next_gen[row_idx][col_idx] = cell_state # cell stays the same
+
+            # update state matric for next gen
+            self.state_matrix = next_gen
+            self.generations += 1
+
 
 
     def count_live_neighbors(self, matrix:"np.ndarray", rows:int, cols:int)->int:
@@ -74,3 +89,4 @@ class GameOfLife:
                          live_neighbor_count += 1
 
         return live_neighbor_count
+    
