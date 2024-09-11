@@ -5,8 +5,10 @@ from app.game_logic import GameOfLife
 class AppGui(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
-
         self.master = master
+
+        # control gui rendering
+        self.is_running = False
 
         # Dimensions
         self.frame_width = 600
@@ -37,8 +39,8 @@ class AppGui(tk.Frame):
 
         # Buttons
         self.display_checkbutton = tk.Checkbutton(self.frame, text="Display Grid", variable=self.check_status, command=self.display_grid)
-        self.play_button = tk.Button(self.frame, text="Start", command=self.start_game)  # Updated command
-        self.pause_button = tk.Button(self.frame, text="Pause", command=self.pause_game)  # Placeholder command
+        self.play_button = tk.Button(self.frame, text="Start", command=self.start_game)  
+        self.pause_button = tk.Button(self.frame, text="Pause", command=self.pause_game)  
         self.next_button = tk.Button(self.frame, text="Next", command=self.render_next_gen)
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
@@ -102,11 +104,11 @@ class AppGui(tk.Frame):
         # Draw the grid
         color = self.get_outline_color()
         self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
-        
-        # Clear the canvas and redraw the grid
-        self.canvas.delete("all")
-        color = self.get_outline_color()
-        self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
+
+        # stop game logic
+        self.is_running = False
+
+        print("Game logic stop!")
 
     def display_grid(self):
         color = self.get_outline_color()
@@ -163,11 +165,21 @@ class AppGui(tk.Frame):
                 self.canvas.create_rectangle(x0, y0, x1, y1, outline=color, fill=fill_color)
 
 
-    # computate game logic
+    # start game update
     def start_game(self):
-        self.render_next_gen()
-        self.master.after(200, self.start_game)
+        # start only if not alrady running
+        if not self.is_running:
+            self.is_running = True
+            self._update_game()
 
+    # pause game update
     def pause_game(self):
-        # Placeholder for pause logic
-        pass
+        # pause if game logic is running
+        if self.is_running:
+            self.is_running = False
+
+    # update game computations
+    def _update_game(self):
+        if self.is_running:
+            self.render_next_gen() # computations
+            self.master.after(200, self._update_game) #schedule next computations
