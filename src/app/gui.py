@@ -108,8 +108,6 @@ class AppGui(tk.Frame):
         # stop game logic
         self.is_running = False
 
-        print("Game logic stop!")
-
     def display_grid(self):
         color = self.get_outline_color()
         self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
@@ -117,9 +115,7 @@ class AppGui(tk.Frame):
     def get_outline_color(self) -> str:
         return "black" if self.check_status.get() else "white"
 
-    def render_next_gen(self):
-        print("Rendering next generation")
-        
+    def render_next_gen(self):        
         # Update game logic state with the current grid state
         self.game_logic.state_matrix = self.grid.copy()  # Copying grid here
 
@@ -128,23 +124,13 @@ class AppGui(tk.Frame):
 
         # Update self.grid with the new state matrix from game logic
         self.grid = self.game_logic.state_matrix.copy()
-
-        # Debugging: Print the updated state matrix
-        print("State matrix after next_generation:")
-        print(self.grid)
-
-        self.update_grid()
+        self.update_grid() 
 
 
     def update_grid(self):
         # Clear canvas before redraw
         self.canvas.delete("all")
         
-        # Debugging: Print the state matrix before rendering
-        print("Updating grid with new state")
-        print("State matrix before rendering:")
-        print(self.game_logic.state_matrix)
-
         # Iterate over each cell in the grid
         for row_idx in range(self.grid_rows):
             for col_idx in range(self.grid_cols):
