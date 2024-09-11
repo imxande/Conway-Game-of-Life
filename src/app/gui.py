@@ -45,8 +45,8 @@ class AppGui(tk.Frame):
         self.clear_button = tk.Button(self.frame, text="Clear", command=self.clear_cells)
 
         # Labels
-        self.generation_label = tk.Label(self.frame, text="Generation: 0")
-        self.population_label = tk.Label(self.frame, text="Population: 0")  # Fixed typo
+        self.generation_label = tk.Label(self.frame, text=f"Generation: {self.game_logic.generations}")
+        self.population_label = tk.Label(self.frame, text=f"Population: {self.game_logic.population}")
         
         # Layout
         self.frame.grid(column=0, row=0, sticky="nsew")
@@ -124,8 +124,11 @@ class AppGui(tk.Frame):
 
         # Update self.grid with the new state matrix from game logic
         self.grid = self.game_logic.state_matrix.copy()
-        self.update_grid() 
+        self.update_grid()
 
+        # update labels
+        self.generation_label.config(text=f"Generations: {self.game_logic.generations}")
+        self.population_label.config(text=f"Population: {self.game_logic.population}")
 
     def update_grid(self):
         # Clear canvas before redraw

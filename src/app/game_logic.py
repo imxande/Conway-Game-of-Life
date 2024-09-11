@@ -42,6 +42,7 @@ class GameOfLife:
         # Update the state matrix with the new generation
         self.state_matrix = next_gen
         self.generations += 1
+        print(f"Generations: {self.generations}")
 
 
     def count_live_neighbors(self, row:int, col:int) -> int:
@@ -73,6 +74,9 @@ class GameOfLife:
                 if 0 <= neighbor_row < max_rows and 0 <= neighbor_col < max_cols:
                     # check if it is a live neighbor (and not the cell itself)
                     if (neighbor_row != row or neighbor_col != col) and self.state_matrix[neighbor_row, neighbor_col] == 1:
+                        # increase counter
                         live_neighbor_count += 1
 
         return live_neighbor_count
+    
+    
