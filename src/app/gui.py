@@ -108,6 +108,14 @@ class AppGui(tk.Frame):
         # stop game logic
         self.is_running = False
 
+        # resets
+        self.game_logic.population = 0
+        self.game_logic.generations = 0
+
+        # update labels
+        self.generation_label.config(text=f"Generations: {self.game_logic.generations}")
+        self.population_label.config(text=f"Population: {self.game_logic.population}")
+
     def display_grid(self):
         color = self.get_outline_color()
         self.draw_grid(self.grid_cols, self.grid_rows, outline_color=color)
