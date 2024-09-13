@@ -1,11 +1,15 @@
 import tkinter as tk
 import numpy as np
 from app.game_logic import GameOfLife
+from app.menu import AppMenu
 
 class AppGui(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
+        
+        # initialize menu
+        self.menu = AppMenu(self.master)
 
         # control gui rendering
         self.is_running = False
@@ -190,3 +194,4 @@ class AppGui(tk.Frame):
         alive_cells = np.any(self.grid == 1) 
         
         return alive_cells
+
