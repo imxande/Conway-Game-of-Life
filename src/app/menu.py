@@ -1,4 +1,4 @@
-from tkinter import Menu, messagebox
+from tkinter import Menu, messagebox, Toplevel
 
 class AppMenu:
     def __init__(self, root):
@@ -7,7 +7,7 @@ class AppMenu:
         # Setup menu
         self.menu_bar = Menu(self.root)
         self.root.config(menu=self.menu_bar)
-
+    
         # Create menu
         self.create_menu()
 
@@ -30,11 +30,12 @@ class AppMenu:
         """
         Displays game rules.
         """
-        messagebox.showinfo(title="Game Rules", message="Game rules go here.")
+        messagebox.showinfo(title="Game Rules", message="1- If the cell is alive, then it stays alive if it has either 2 or 3 live neighbors.\n\n2-If the cell is dead, then it springs to life only in the case that it has 3 live neighbors.")
 
     def show_history(self):
         """
         Displays game history.
         """ 
-        messagebox.showinfo(title="Game History", message="History goes here.")
+        self.history_view = Toplevel(self.root)
+        self.history_view.title("Game History")
 
