@@ -1,4 +1,5 @@
-from tkinter import Menu, messagebox, Toplevel, Message
+from tkinter import Menu, messagebox, Toplevel, Message, Button
+import numpy as np
 
 class AppMenu:
     def __init__(self, root):
@@ -27,7 +28,7 @@ class AppMenu:
         # Add commands to menus
         view_menu.add_command(label="Rules", command=self.show_rules)
         view_menu.add_command(label="History", command=self.show_history)
-        preset_menu.add_command(label="Pick")
+        preset_menu.add_command(label="Choose Preset", command=self.show_presets)
 
     def show_rules(self):
         """
@@ -53,4 +54,21 @@ class AppMenu:
         message = Message(self.history_view, text=history_message, padx=20, pady=20)
         message.pack()
 
+    def show_presets(self):
+        """
+        Displays the presets and associated button widgets and images in a toplevel window
+        """
+        self.preset_window = Toplevel(self.root)
+        self.preset_window.title("Choose a preset")
 
+        # Buttons
+        glider_button = Button(self.preset_window, text="Glider")
+        glider_button.pack(padx=10, pady=10)
+        pulsar_button = Button(self.preset_window, text="Pulsar")
+        pulsar_button.pack(padx=10, pady=10)
+        pentomino_button = Button(self.preset_window, text="R-pentomino")
+        pentomino_button.pack(padx=10, pady=10)
+
+
+         
+        
