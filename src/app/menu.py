@@ -16,15 +16,18 @@ class AppMenu:
         Creates view menu to display rules and 
         history of the game.
         """
-        # Create a View menu
+        # Create menus
         view_menu = Menu(self.menu_bar, tearoff=0)
+        preset_menu = Menu(self.menu_bar, tearoff=0)
 
         # Add view menu to main menu bar
         self.menu_bar.add_cascade(label="View", menu=view_menu)
+        self.menu_bar.add_cascade(label="Presets", menu=preset_menu)
 
-        # Add commands to view menu
+        # Add commands to menus
         view_menu.add_command(label="Rules", command=self.show_rules)
         view_menu.add_command(label="History", command=self.show_history)
+        preset_menu.add_command(label="Pick")
 
     def show_rules(self):
         """
