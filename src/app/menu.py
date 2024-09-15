@@ -65,9 +65,9 @@ class AppMenu:
         # Buttons
         glider_button = Button(self.preset_window, text="Glider", command=self.gui.set_glider)
         glider_button.pack(padx=10, pady=10)
-        pulsar_button = Button(self.preset_window, text="Pulsar")
+        pulsar_button = Button(self.preset_window, text="Pi-heptomino", command=self.gui.set_heptomino)
         pulsar_button.pack(padx=10, pady=10)
-        pentomino_button = Button(self.preset_window, text="R-pentomino")
+        pentomino_button = Button(self.preset_window, text="R-pentomino", command=self.gui.set_pentomino)
         pentomino_button.pack(padx=10, pady=10)
 
 

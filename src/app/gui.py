@@ -238,7 +238,32 @@ class AppGui(tk.Frame):
         ]
         self.set_preset(glider)
     
+    def set_heptomino(self):
+        """
+        Sets default state of canvas cells to pulsar preset
+        """
+        pi_heptomino = [
+            [0, 1, 1],
+            [1, 1, 0],
+            [0, 1, 1]
+        ]
+       
 
 
 
+        self.set_preset(pi_heptomino)
+
+    def set_pentomino(self):
+        """
+        Sets default state of canvas cells to pulsar preset
+        """
+        r_pentomino = [
+            [0, 1, 1],
+            [1, 1, 0],
+            [0, 1, 0]
+        ]       
+
+
+
+        self.set_preset(r_pentomino)
 
