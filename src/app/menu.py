@@ -2,8 +2,9 @@ from tkinter import Menu, messagebox, Toplevel, Message, Button
 import numpy as np
 
 class AppMenu:
-    def __init__(self, root):
+    def __init__(self, root, gui):
         self.root = root
+        self.gui = gui
 
         # Setup menu
         self.menu_bar = Menu(self.root)
@@ -62,7 +63,7 @@ class AppMenu:
         self.preset_window.title("Choose a preset")
 
         # Buttons
-        glider_button = Button(self.preset_window, text="Glider")
+        glider_button = Button(self.preset_window, text="Glider", command=self.gui.set_glider)
         glider_button.pack(padx=10, pady=10)
         pulsar_button = Button(self.preset_window, text="Pulsar")
         pulsar_button.pack(padx=10, pady=10)

@@ -9,7 +9,7 @@ class AppGui(tk.Frame):
         self.master = master
         
         # initialize menu
-        self.menu = AppMenu(root=self.master)
+        self.menu = AppMenu(root=self.master, gui=self)
 
         # control gui rendering
         self.is_running = False
@@ -194,5 +194,51 @@ class AppGui(tk.Frame):
         alive_cells = np.any(self.grid == 1) 
         
         return alive_cells
+
+    def set_preset(self, preset):
+        """
+        Resets canvas and sets the states of the canvas cell
+        to the preset, ensuring all cells (alive or dead) are drawn.
+        """
+        self.canvas.delete("all")
+
+        # Center preset on canvas
+        preset_rows = len(preset)
+        preset_cols = len(preset[0])
+        start_row = (self.grid.shape[0] - preset_rows) // 2
+        start_col = (self.grid.shape[1] - preset_cols) // 2
+
+        for row in range(self.grid.shape[0]):  # iterate through all grid cells
+            for col in range(self.grid.shape[1]):
+                if start_row <= row < start_row + preset_rows and start_col <= col < start_col + preset_cols:
+                    # apply the preset if within its bounds
+                    self.grid[row, col] = preset[row - start_row][col - start_col]
+                    fill_color = "black" if self.grid[row, col] == 1 else "white"
+                else:
+                    # For all other cells, ensure they are dead
+                    self.grid[row, col] = 0
+                    fill_color = "white"
+
+                # Draw the cell
+                x0 = col * self.cell_size
+                y0 = row * self.cell_size
+                x1 = x0 + self.cell_size
+                y1 = y0 + self.cell_size
+                self.canvas.create_rectangle(x0, y0, x1, y1, outline="black", fill=fill_color)
+    
+
+    def set_glider(self):
+        """
+        Sets the default state of canvas cells to glider preset.
+        """
+        glider = [
+            [0, 1, 0],
+            [0, 0, 1],
+            [1, 1, 1]
+        ]
+        self.set_preset(glider)
+    
+
+
 
 
