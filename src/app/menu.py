@@ -1,4 +1,4 @@
-from tkinter import Menu, messagebox, Toplevel, Message, Button
+from tkinter import Menu, messagebox, Toplevel, Message, Button, PhotoImage
 import numpy as np
 
 class AppMenu:
@@ -62,9 +62,12 @@ class AppMenu:
         self.preset_window = Toplevel(self.root)
         self.preset_window.title("Choose a preset")
 
+        # Images
+        self.glider_img = PhotoImage(file="./images/glider.png")
+
         # Buttons
-        glider_button = Button(self.preset_window, text="Glider", command=self.gui.set_glider)
-        glider_button.pack(padx=10, pady=10)
+        glider_button = Button(self.preset_window, image=self.glider_img, command=self.gui.set_glider)
+        glider_button.pack(padx=60, pady=10)
         pulsar_button = Button(self.preset_window, text="Pi-heptomino", command=self.gui.set_heptomino)
         pulsar_button.pack(padx=10, pady=10)
         pentomino_button = Button(self.preset_window, text="R-pentomino", command=self.gui.set_pentomino)
