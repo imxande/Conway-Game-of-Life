@@ -66,12 +66,13 @@ class AppMenu:
         self.glider_img = PhotoImage(file="./images/glider.png")
         self.heptomino_img = PhotoImage(file="./images/pi_heptomino.png")
         self.pentomino_img = PhotoImage(file="./images/r_pentomino.png")
+
         # Buttons
-        glider_button = Button(self.preset_window, image=self.glider_img, command=self.gui.set_glider)
+        glider_button = Button(self.preset_window, image=self.glider_img, command=self.gui.set_glider, cursor="hand2")
         glider_button.pack(padx=60, pady=10)
-        heptomino_button = Button(self.preset_window, image=self.heptomino_img, command=self.gui.set_heptomino)
+        heptomino_button = Button(self.preset_window, image=self.heptomino_img, command=self.gui.set_heptomino, cursor="hand2")
         heptomino_button.pack(padx=60, pady=10)
-        pentomino_button = Button(self.preset_window, image=self.pentomino_img, command=self.gui.set_pentomino)
+        pentomino_button = Button(self.preset_window, image=self.pentomino_img, command=self.gui.set_pentomino, cursor="hand2")
         pentomino_button.pack(padx=60, pady=10)
 
 
