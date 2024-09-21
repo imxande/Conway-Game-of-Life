@@ -83,9 +83,10 @@ class AppMenu:
     def adjust_speed(self):
         """"Method that control the speed of next generations rendering"""
         self.speed_window = Toplevel(self.root)
-        self.speed_window.title("Adjust Speed")
+        self.speed_window.title("Speed")
         var = IntVar()
+
         # Scales
-        speed_scale = Scale(self.speed_window, variable=var)
+        speed_scale = Scale(self.speed_window, variable=var, orient="horizontal")
         speed_scale.pack(padx=60, pady=10)
 
