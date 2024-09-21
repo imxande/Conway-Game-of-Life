@@ -87,6 +87,22 @@ class AppMenu:
         var = IntVar()
 
         # Scales
-        speed_scale = Scale(self.speed_window, variable=var, orient="horizontal")
+        speed_scale = Scale(self.speed_window, variable=var, orient="horizontal", cursor="hand2", command=self._handle_scale_change, from_=100, to=500)
+        speed_scale.set(self.gui.speed) # initial value of scale
         speed_scale.pack(padx=60, pady=10)
 
+
+    def _handle_scale_change(self, val):
+        """Method that handles what happens when scale changes"""
+        slider_value = int(val)
+
+        # speed ranges
+        max_speed = 500
+        min_speed = 100 
+
+        # compute new_speed
+        new_speed = int(min_speed + (slider_value - 100) *  (max_speed - min_speed) / 400)
+        
+        # update speed
+        self.gui.set_speed(new_speed)
+        

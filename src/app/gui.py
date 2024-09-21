@@ -21,6 +21,9 @@ class AppGui(tk.Frame):
         self.grid_cols = self.frame_width // self.cell_size
         self.grid_rows = self.frame_height // self.cell_size
 
+        # Cell generations speed
+        self.speed = 200
+
         # Initialize grid
         self.grid = np.zeros((self.grid_rows, self.grid_cols))
 
@@ -186,7 +189,7 @@ class AppGui(tk.Frame):
     def _update_game(self):
         if self.is_running:
             self.render_next_gen() # computations
-            self.master.after(200, self._update_game) #schedule next computations
+            self.master.after(self.speed, self._update_game) #schedule next computations
 
     # check for alive cells in grid
     def _has_alive_cells(self)-> bool:
@@ -264,4 +267,6 @@ class AppGui(tk.Frame):
         self.set_preset(r_pentomino)
     
 
-
+    def set_speed(self, new_speed):
+        """Method to set the speed in which new generations are created"""
+        self.speed = new_speed
