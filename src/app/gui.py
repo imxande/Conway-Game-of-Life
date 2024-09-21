@@ -247,9 +247,6 @@ class AppGui(tk.Frame):
             [1, 1, 0],
             [0, 1, 1]
         ]
-       
-
-
 
         self.set_preset(pi_heptomino)
 
@@ -264,6 +261,7 @@ class AppGui(tk.Frame):
         ]       
 
 
-
         self.set_preset(r_pentomino)
+    
+
 

@@ -1,4 +1,4 @@
-from tkinter import Menu, messagebox, Toplevel, Message, Button, PhotoImage
+from tkinter import Menu, messagebox, Toplevel, Message, Button, PhotoImage, Scale, IntVar
 import numpy as np
 
 class AppMenu:
@@ -21,15 +21,18 @@ class AppMenu:
         # Create menus
         view_menu = Menu(self.menu_bar, tearoff=0)
         preset_menu = Menu(self.menu_bar, tearoff=0)
+        speed_menu = Menu(self.menu_bar, tearoff=0)
 
         # Add view menu to main menu bar
         self.menu_bar.add_cascade(label="View", menu=view_menu)
         self.menu_bar.add_cascade(label="Presets", menu=preset_menu)
+        self.menu_bar.add_cascade(label="Speed", menu=speed_menu)
 
         # Add commands to menus
         view_menu.add_command(label="Rules", command=self.show_rules)
         view_menu.add_command(label="History", command=self.show_history)
         preset_menu.add_command(label="Choose Preset", command=self.show_presets)
+        speed_menu.add_command(label="Adjust Speed", command=self.adjust_speed)
 
     def show_rules(self):
         """
@@ -77,4 +80,12 @@ class AppMenu:
 
 
          
-        
+    def adjust_speed(self):
+        """"Method that control the speed of next generations rendering"""
+        self.speed_window = Toplevel(self.root)
+        self.speed_window.title("Adjust Speed")
+        var = IntVar()
+        # Scales
+        speed_scale = Scale(self.speed_window, variable=var)
+        speed_scale.pack(padx=60, pady=10)
+
