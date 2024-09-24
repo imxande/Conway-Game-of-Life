@@ -1,5 +1,6 @@
 from tkinter import Menu, messagebox, Toplevel, Message, Button, PhotoImage, Scale, IntVar
 import numpy as np
+import os
 
 class AppMenu:
     def __init__(self, root, gui):
@@ -65,10 +66,24 @@ class AppMenu:
         self.preset_window = Toplevel(self.root)
         self.preset_window.title("Choose a preset")
 
-        # Images
-        self.glider_img = PhotoImage(file="./images/glider.png")
-        self.heptomino_img = PhotoImage(file="./images/pi_heptomino.png")
-        self.pentomino_img = PhotoImage(file="./images/r_pentomino.png")
+        # Get the current script directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Build image paths
+        glider_path = os.path.join(script_dir, '../../images/glider.png')
+        heptomino_path = os.path.join(script_dir, '../../images/pi_heptomino.png')
+        pentomino_path = os.path.join(script_dir, '../../images/r_pentomino.png')
+
+        try:
+            # Load Images
+            self.glider_img = PhotoImage(file=glider_path)
+            self.heptomino_img = PhotoImage(file=heptomino_path)
+            self.pentomino_img = PhotoImage(file=pentomino_path)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error loading images: {str(e)}")
+            return
+        
 
         # Buttons
         glider_button = Button(self.preset_window, image=self.glider_img, command=self.gui.set_glider, cursor="hand2")
