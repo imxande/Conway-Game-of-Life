@@ -2,8 +2,6 @@
 
 ![](./images/game_of_life.gif)
 
-[Watch the video](./video/demo.mp4)
-
 
 ## Description
 
